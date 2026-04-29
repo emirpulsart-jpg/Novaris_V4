@@ -1,0 +1,88 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@200;400;600;900&family=JetBrains+Mono:wght@300;500&display=swap');
+@import "tailwindcss";
+
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Inter", sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+  
+  --color-bg: #080808;
+  --color-line: #1A1A1A;
+  --color-line-light: #333333;
+  --color-accent: #FFFFFF;
+  --color-muted: #666666;
+}
+
+:root {
+  background-color: var(--color-bg);
+  color: var(--color-accent);
+  cursor: crosshair;
+}
+
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-muted) transparent;
+}
+
+::-webkit-scrollbar {
+  width: 4px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-line-light);
+  border-radius: 0px;
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-bg);
+}
+
+.dot-matrix {
+  background-image: radial-gradient(var(--color-line) 1px, transparent 1px);
+  background-size: 20px 20px;
+}
+
+.glass {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--color-line);
+}
+
+.hero-title {
+  font-size: clamp(3rem, 10vw, 110px);
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+  font-weight: 900;
+}
+
+.text-outline {
+  color: transparent;
+  -webkit-text-stroke: 1px white;
+}
+
+.grid-line {
+  position: absolute;
+  background: var(--color-line);
+  z-index: 0;
+}
+
+.v-line {
+  width: 1px;
+  height: 100%;
+}
+
+.h-line {
+  height: 1px;
+  width: 100%;
+}
+
+@media (max-width: 640px) {
+  * {
+    cursor: auto !important;
+  }
+}
