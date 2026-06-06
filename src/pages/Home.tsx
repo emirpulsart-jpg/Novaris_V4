@@ -297,7 +297,7 @@ export default function Home() {
           whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
           viewport={{ once: true }}
           transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-          className="relative z-20 px-6 md:px-20 lg:px-40 w-full max-w-[1400px] mx-auto"
+          className="relative z-20 px-6 md:px-20 lg:px-40 w-full"
         >
           <div className="flex flex-wrap gap-2 md:gap-4 mb-8">
             <span className="font-mono text-[8px] md:text-[10px] px-3 py-1.5 border border-white/10 text-zinc-400 uppercase tracking-widest bg-white/5">
@@ -325,10 +325,10 @@ export default function Home() {
                     left: titleGlowX,
                     top: titleGlowY,
                     x: '-50%',
-                    y: '-50%',
+                    y: '-55%',
                   }}
                 >
-                  <div className="w-32 h-32 bg-yellow-400/20 blur-[70px] rounded-full opacity-60" />
+                  <div className="w-32 h-32 bg-[#D000FF] blur-[70px] rounded-full opacity-60" />
                   <div className="w-8 h-8 bg-white blur-[20px] rounded-full opacity-30 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
                 </motion.div>
               )}
@@ -774,4 +774,3 @@ export default function Home() {
     </>
   );
 }
-
