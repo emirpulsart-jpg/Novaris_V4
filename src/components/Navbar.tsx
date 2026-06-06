@@ -1,8 +1,27 @@
+import { useState, useEffect } from 'react';
 import { motion } from 'motion/react';
 import { Link, useLocation } from 'react-router-dom';
 
 export default function Navbar() {
   const location = useLocation();
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
+      }
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    // Run once initially
+    handleScroll();
+    
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
   const navItems = [
     { id: '/', label: 'Accueil', num: '01' },
     { id: '/agence', label: 'Agence', num: '02' },
@@ -11,7 +30,11 @@ export default function Navbar() {
 
   return (
     <>
-      <div className="fixed top-0 left-0 w-16 md:w-20 h-16 md:h-20 flex items-center justify-center z-[1100] border-r border-b border-line bg-bg">
+      <div className={`fixed top-0 left-0 w-16 md:w-20 h-16 md:h-20 flex items-center justify-center z-[1100] border-r border-b transition-all duration-300 ${
+        isScrolled 
+          ? 'border-line bg-bg' 
+          : 'border-transparent bg-transparent'
+      }`}>
         <motion.div 
           whileHover={{ rotate: 90 }}
           className="w-6 h-6 md:w-8 md:h-8 border-2 border-white flex items-center justify-center rotate-45"
@@ -25,7 +48,11 @@ export default function Navbar() {
       <motion.header 
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        className="fixed top-0 left-16 md:left-20 right-0 h-16 md:h-20 flex items-center justify-between px-6 md:px-10 z-[1000] border-b border-line bg-bg/80 backdrop-blur-sm"
+        className={`fixed top-0 left-16 md:left-20 right-0 h-16 md:h-20 flex items-center justify-between px-6 md:px-10 z-[1000] border-b transition-all duration-300 ${
+          isScrolled 
+            ? 'border-line bg-bg/80 backdrop-blur-sm' 
+            : 'border-transparent bg-transparent backdrop-blur-none'
+        }`}
       >
         <div className="font-mono text-xs tracking-[0.3em] font-medium hidden md:block text-white/90">NOVARIS</div>
         
