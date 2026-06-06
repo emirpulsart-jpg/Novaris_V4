@@ -11,6 +11,31 @@ export default function Home() {
   const [isTitleHovered, setIsTitleHovered] = useState(false);
   const containerRef = useRef<HTMLDivElement>(null);
   const titleRef = useRef<HTMLHeadingElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (video) {
+      video.muted = true;
+      video.setAttribute('muted', '');
+      video.playsInline = true;
+      video.setAttribute('playsinline', '');
+      
+      const playPromise = video.play();
+      if (playPromise !== undefined) {
+        playPromise.catch((error) => {
+          console.warn("Autoplay was prevented by browser:", error);
+          const playOnInteraction = () => {
+            video.play().catch(e => console.error("Retry play failed:", e));
+            document.removeEventListener('click', playOnInteraction);
+            document.removeEventListener('touchstart', playOnInteraction);
+          };
+          document.addEventListener('click', playOnInteraction);
+          document.addEventListener('touchstart', playOnInteraction);
+        });
+      }
+    }
+  }, []);
   
   // Mouse position state for parallax
   const mouseX = useMotionValue(0);
@@ -131,10 +156,10 @@ export default function Home() {
   ];
 
   const complementaryServices = [
-    { title: "SEO", icon: <Layers className="w-4 h-4" /> },
-    { title: "Création de Logo", icon: <Zap className="w-4 h-4" /> },
+    { title: "SEO", icon: <Activity className="w-4 h-4" /> },
+    { title: "Design Graphique", icon: <Layers className="w-4 h-4" /> },
     { title: "Hébergement", icon: <ShieldCheck className="w-4 h-4" /> },
-    { title: "Stratégie Digitale", icon: <Globe className="w-4 h-4" /> }
+    { title: "Stratégie Digitale", icon: <Zap className="w-4 h-4" /> }
   ];
 
   return (
@@ -207,12 +232,72 @@ export default function Home() {
         />
       </div>
 
-      {/* Hero Section */}
-      <section ref={heroRef} className="relative min-h-[80vh] flex flex-col justify-center pt-32 pb-10">
+      {/* Cinematic Intro Video Section (First Item) */}
+      <section className="relative w-screen left-1/2 -translate-x-1/2 h-[50dvh] sm:h-[65dvh] md:h-[85dvh] overflow-hidden bg-black border-b border-white/5">
+        {/* Cinematic Video Container */}
+        <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
+          <div className="absolute inset-0 bg-gradient-to-b from-[#080808]/10 via-transparent to-[#080808] z-10" />
+          <video
+            ref={videoRef}
+            autoPlay
+            loop
+            muted
+            playsInline
+            controls={false}
+            controlsList="nodownload nofullscreen noremoteplayback"
+            className="w-full h-full object-cover opacity-85 pointer-events-none select-none"
+            style={{ pointerEvents: 'none' }}
+          >
+            {/* Preferred path for local uploaded hero video */}
+            <source src="/hero.mp4" type="video/mp4" />
+            <source src="/hero-bg.mp4" type="video/mp4" />
+            <source src="/assets/hero-bg.mp4" type="video/mp4" />
+            
+            {/* Direct absolute links to their live production channels to pull files on preview environment */}
+            <source src="https://novaris-studio.com/hero-bg.mp4" type="video/mp4" />
+            <source src="https://www.novaris-studio.com/hero-bg.mp4" type="video/mp4" />
+            <source src="https://novaris.studio/hero-bg.mp4" type="video/mp4" />
+            <source src="https://novaris-studio.com/assets/video/hero.mp4" type="video/mp4" />
+            
+            {/* Dynamic, extremely stable premium dark solutions loop fallback and Codepen as ultra-reliable backups */}
+            <source src="https://assets.vercel.com/video/upload/v1584133469/home/solutions-cards-dark.mp4" type="video/mp4" />
+            <source src="https://assets.codepen.io/3364143/7b.mp4" type="video/mp4" />
+          </video>
+        </div>
+
+        {/* Minimal Subtle Caption Overlay */}
+        <div className="absolute inset-0 flex flex-col justify-end pb-12 px-6 md:px-20 lg:px-40 z-20 pointer-events-none">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 1.2, delay: 0.2 }}
+            className="w-full max-w-[1400px] mx-auto flex flex-col items-start gap-3"
+          >
+            <div className="flex items-center gap-2 text-zinc-500 font-mono text-[8px] md:text-[9px] tracking-[0.3em] uppercase">
+              <span>DÉFILLER POUR DÉCOUVRIR</span>
+              <motion.div
+                animate={{ y: [0, 4, 0] }}
+                transition={{ duration: 1.5, repeat: Infinity, ease: "easeInOut" }}
+              >
+                <ArrowDown className="w-3.5 h-3.5 text-zinc-400" />
+              </motion.div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Hero Section - Full Bleed centered text below the video showcase */}
+      <section ref={heroRef} className="relative w-screen left-1/2 -translate-x-1/2 min-h-[50vh] md:min-h-[60vh] flex flex-col justify-center pt-20 pb-20 overflow-hidden bg-black border-b border-white/5">
+        {/* Abstract space lines backdrop instead of a heavy video */}
+        <div className="absolute inset-0 pointer-events-none opacity-[0.03] bg-[linear-gradient(rgba(255,255,255,0.15)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.15)_1px,transparent_1px)] bg-[size:40px_40px] z-0" />
+        <div className="absolute inset-0 bg-gradient-to-b from-[#080808] via-transparent to-[#080808] z-5 pointer-events-none" />
+
         <motion.div 
-          initial={{ opacity: 0, y: 100, filter: 'blur(10px)' }}
-          animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          initial={{ opacity: 0, y: 60, filter: 'blur(8px)' }}
+          whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+          viewport={{ once: true }}
           transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+          className="relative z-20 px-6 md:px-20 lg:px-40 w-full max-w-[1400px] mx-auto"
         >
           <div className="flex flex-wrap gap-2 md:gap-4 mb-8">
             <span className="font-mono text-[8px] md:text-[10px] px-3 py-1.5 border border-white/10 text-zinc-400 uppercase tracking-widest bg-white/5">
@@ -243,7 +328,7 @@ export default function Home() {
                     y: '-50%',
                   }}
                 >
-                  <div className="w-32 h-32 bg-[#D000FF] blur-[70px] rounded-full opacity-60" />
+                  <div className="w-32 h-32 bg-yellow-400/20 blur-[70px] rounded-full opacity-60" />
                   <div className="w-8 h-8 bg-white blur-[20px] rounded-full opacity-30 absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" />
                 </motion.div>
               )}
@@ -568,7 +653,7 @@ export default function Home() {
       </section>
 
       {/* Services Complémentaires Section */}
-      <section ref={complementaryRef} className="py-24 border-t border-white/5 bg-zinc-950/30">
+      <section ref={complementaryRef} className="py-24 border-t border-white/5">
         <motion.div 
           style={{ 
             opacity: complementaryTitleOpacity, 
@@ -577,48 +662,47 @@ export default function Home() {
           }}
           className="mb-16"
         >
-          <div className="font-mono text-[10px] text-blue-500 uppercase tracking-widest mb-6">#PLUS_LOIN</div>
+          <div className="font-mono text-[10px] text-zinc-500 uppercase tracking-widest mb-6">#PLUS_LOIN</div>
           <h2 className="text-4xl md:text-5xl font-black tracking-tighter uppercase">SERVICES <br /><span className="text-outline">COMPLÉMENTAIRES.</span></h2>
         </motion.div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {[
             { title: "SEO & Référencement", desc: "Optimisation pour les moteurs de recherche pour une visibilité maximale.", icon: <Activity className="w-6 h-6" /> },
-            { title: "Création de Logo", desc: "Identité visuelle unique et mémorable pour votre marque.", icon: <Layers className="w-6 h-6" /> },
+            { title: "Design Graphique", desc: "Identité visuelle unique et mémorable pour votre marque.", icon: <Layers className="w-6 h-6" /> },
             { title: "Hébergement Pro", desc: "Serveurs ultra-rapides et sécurisés pour une performance sans faille.", icon: <ShieldCheck className="w-6 h-6" /> },
             { title: "Stratégie Digitale", desc: "Accompagnement stratégique pour booster votre croissance en ligne.", icon: <Zap className="w-6 h-6" /> }
           ].map((service, idx) => (
-            <Link to="/contact" key={idx} className="block group">
-              <motion.div
-                whileHover={{ 
-                  scale: 1.02, 
-                  transition: { duration: 0.3 }
-                }}
-                className="relative p-8 border border-white/5 bg-zinc-900/50 hover:border-blue-500/30 hover:bg-blue-500/[0.02] transition-all duration-300 flex flex-col gap-6 h-full overflow-hidden"
-              >
-                {/* Subtle blue glow light behind */}
-                <div className="absolute -inset-10 bg-blue-500/5 blur-[50px] opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none" />
-                
-                <div className="text-zinc-500 group-hover:text-blue-500 transition-colors relative z-10">
-                  {service.icon}
-                </div>
-                
-                <div className="space-y-3 relative z-10">
-                  <h3 className="text-lg font-bold tracking-tight uppercase group-hover:text-white transition-colors">{service.title}</h3>
-                  <p className="text-sm text-zinc-500 leading-relaxed group-hover:text-zinc-400 transition-colors">{service.desc}</p>
-                </div>
-  
-                <div className="mt-auto pt-4 border-t border-white/5 flex justify-between items-center relative z-10">
-                  <span className="font-mono text-[8px] text-zinc-600 uppercase tracking-widest group-hover:text-blue-500/50 transition-colors">Service _{idx + 1}</span>
-                  <ChevronRight className="w-4 h-4 text-zinc-800 group-hover:text-blue-500 transition-all transform group-hover:translate-x-1" />
-                </div>
-              </motion.div>
-            </Link>
+            <div key={idx} className="group relative">
+              {/* Background Blue Glow */}
+              <div className="absolute -inset-10 bg-blue-600/25 blur-[60px] opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none rounded-full z-0" />
+              
+              <Link to="/contact" className="block relative z-10 h-full">
+                <motion.div
+                  whileHover={{ y: -5 }}
+                  className="relative p-8 border border-white/5 bg-zinc-900/80 backdrop-blur-sm hover:border-blue-500/50 transition-all duration-300 flex flex-col gap-6 h-full rounded-xl overflow-hidden shadow-2xl"
+                >
+                  <div className="text-zinc-500 group-hover:text-blue-400 transition-colors">
+                    {service.icon}
+                  </div>
+                  
+                  <div className="space-y-3">
+                    <h3 className="text-lg font-bold tracking-tight uppercase group-hover:text-white transition-colors">{service.title}</h3>
+                    <p className="text-sm text-zinc-500 leading-relaxed font-light group-hover:text-zinc-300 transition-colors">{service.desc}</p>
+                  </div>
+    
+                  <div className="mt-auto pt-4 border-t border-white/5 flex justify-between items-center">
+                    <span className="font-mono text-[8px] text-zinc-600 uppercase tracking-widest group-hover:text-blue-500/50 transition-colors">Service _{idx + 1}</span>
+                    <ChevronRight className="w-4 h-4 text-zinc-800 group-hover:text-blue-500 transition-all transform group-hover:translate-x-1" />
+                  </div>
+                </motion.div>
+              </Link>
+            </div>
           ))}
         </div>
       </section>
 
-      {/* Expertises Section with Squares */}
+      {/* Squares / Expertise Section */}
       <section ref={creationRef} className="py-24 border-t border-white/5">
         <motion.div 
           style={{ 
@@ -626,29 +710,29 @@ export default function Home() {
             y: creationTitleY,
             scale: creationTitleScale
           }}
-          className="mb-16"
+          className="mb-16 text-center"
         >
-          <div className="font-mono text-[10px] text-zinc-500 uppercase tracking-widest mb-6">#CONCEPTION_WEB</div>
-          <h2 className="text-4xl md:text-5xl font-black tracking-tighter uppercase">CRÉATION <br /><span className="text-outline">DE SITES WEB.</span></h2>
+          <div className="font-mono text-[10px] text-zinc-500 uppercase tracking-widest mb-6">#CONCEPTION</div>
+          <h2 className="text-4xl md:text-5xl font-black tracking-tighter uppercase">CRÉATION DE <br /><span className="text-outline">SITES WEB.</span></h2>
         </motion.div>
         
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {mainExpertises.map((item, i) => (
             <div key={i} className="group relative">
-              {/* Background Blue Glow on Hover */}
-              <div className="absolute inset-0 bg-blue-600/20 blur-[30px] opacity-0 group-hover:opacity-100 transition-opacity duration-500 rounded-sm" />
+              {/* Background Blue Glow */}
+              <div className="absolute -inset-10 bg-blue-600/20 blur-[60px] opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none rounded-full z-0" />
               
-              <Link to="/contact" className="relative aspect-square border border-white/10 overflow-hidden bg-zinc-900 block transition-all duration-500 group-hover:border-blue-500/30">
-                <img src={item.img} alt={`Création de site web Annecy - ${item.title}`} className="w-full h-full object-cover opacity-20 group-hover:opacity-40 transition-opacity duration-700 grayscale" referrerPolicy="no-referrer" />
+              <Link to="/contact" className="relative aspect-square border border-white/10 overflow-hidden bg-zinc-900 block transition-all duration-500 group-hover:border-blue-500/50 z-10 shadow-2xl">
+                <img src={item.img} alt={item.title} className="w-full h-full object-cover opacity-20 group-hover:opacity-40 transition-all duration-700 grayscale group-hover:grayscale-0" referrerPolicy="no-referrer" />
                 <div className="absolute inset-0 p-8 flex flex-col justify-between">
                   <div className="font-mono text-[10px] text-zinc-500 italic">0{i+1}</div>
                   <div className="space-y-4">
-                    <h3 className="text-2xl font-bold uppercase tracking-tight">{item.title}</h3>
+                    <h3 className="text-2xl font-bold uppercase tracking-tight text-white">{item.title}</h3>
                     <p className="text-[11px] text-zinc-400 font-light leading-relaxed h-0 group-hover:h-16 opacity-0 group-hover:opacity-100 transition-all duration-500 overflow-hidden">
                       {item.desc}
                     </p>
-                    <div className="w-10 h-10 border border-white/20 flex items-center justify-center group-hover:bg-accent group-hover:border-accent transition-all">
-                      <ChevronRight className="w-5 h-5 text-white group-hover:text-black" />
+                    <div className="w-10 h-10 border border-white/20 flex items-center justify-center group-hover:bg-blue-500 group-hover:border-blue-500 transition-all">
+                      <ChevronRight className="w-5 h-5 text-white" />
                     </div>
                   </div>
                 </div>
@@ -658,26 +742,27 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Complementary Services Section */}
-      <section className="py-24 border-t border-white/5 overflow-hidden">
+      {/* Beyond the Concept Section */}
+      <section className="py-24 border-t border-white/5">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           <div className="lg:col-span-1 space-y-6">
-            <h3 className="text-xs font-mono uppercase tracking-[0.3em] text-zinc-400">Services Complémentaires</h3>
+            <h3 className="text-xs font-mono uppercase tracking-[0.3em] text-zinc-500">Expertises annexes</h3>
+            <h2 className="text-4xl font-bold tracking-tighter uppercase leading-none">AU DELÀ DU <br /><span className="text-outline">CONCEPT.</span></h2>
             <p className="text-sm text-zinc-500 font-light leading-relaxed">
-              Au-delà de la conception, nous vous apportons les briques essentielles pour une présence digitale complète et pérenne.
+              Nous vous accompagnons également sur les leviers annexes pour booster votre présence.
             </p>
           </div>
           <div className="lg:col-span-2 grid grid-cols-1 sm:grid-cols-2 gap-8 border-l border-white/5 pl-0 lg:pl-10">
-             {complementaryServices.map((service, i) => (
+              {complementaryServices.map((service, i) => (
                 <div key={i} className="group relative">
-                  {/* Subtle yellow glow behind */}
-                  <div className="absolute inset-0 bg-yellow-500/5 blur-[30px] opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                  {/* Background Yellow Glow */}
+                  <div className="absolute -inset-10 bg-yellow-500/15 blur-[60px] opacity-0 group-hover:opacity-100 transition-all duration-500 pointer-events-none rounded-full z-0" />
                   
-                  <div className="relative flex items-start gap-4 p-6 border border-white/5 hover:border-yellow-500/30 hover:bg-yellow-500/[0.02] transition-all duration-300">
-                    <div className="mt-1 text-zinc-600 group-hover:text-yellow-500 transition-colors">{service.icon}</div>
+                  <div className="relative flex items-start gap-4 p-6 border border-white/5 bg-zinc-950/50 backdrop-blur-sm shadow-xl hover:border-yellow-500/50 transition-all duration-300 z-10 rounded-lg">
+                    <div className="mt-1 text-zinc-600 group-hover:text-yellow-400 transition-colors">{service.icon}</div>
                     <div>
                       <h4 className="font-bold text-sm uppercase mb-2 tracking-widest group-hover:text-white transition-colors">{service.title}</h4>
-                      <div className="w-4 h-[1px] bg-white/20 group-hover:bg-yellow-500/50 transition-colors" />
+                      <div className="w-4 h-[1px] bg-white/20 group-hover:bg-yellow-500/80 transition-colors" />
                     </div>
                   </div>
                 </div>
