@@ -79,11 +79,7 @@ export default function Navbar() {
         <div className="font-mono text-[10px] text-muted uppercase hidden lg:block tracking-widest">Annecy / 45.8992° N</div>
       </motion.header>
 
-      <aside className="fixed left-0 top-16 md:top-20 bottom-16 md:bottom-20 w-16 md:w-20 hidden md:flex flex-col items-center justify-center z-[1000] border-r border-line bg-bg">
-        <div className="font-mono text-[10px] rotate-180 text-muted" style={{ writingMode: 'vertical-rl' }}>
-          SCROLL TO DISCOVER — NOVARIS 2026
-        </div>
-      </aside>
+
 
       <footer className="fixed bottom-0 left-0 right-0 h-16 md:h-20 flex items-center justify-between px-6 md:px-10 z-[1000] border-t border-line bg-bg/80 backdrop-blur-sm">
         <div className="flex items-center gap-6">
