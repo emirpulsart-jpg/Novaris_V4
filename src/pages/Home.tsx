@@ -205,7 +205,7 @@ export default function Home() {
           `}
         </script>
       </Helmet>
-      <div ref={containerRef} className="w-full relative z-10 px-6 md:px-20 lg:px-40" onMouseMove={handleMouseMove}>
+      <div ref={containerRef} className="w-full relative z-10" onMouseMove={handleMouseMove}>
       {/* Background Yellow Highlights */}
       <div className="absolute inset-0 pointer-events-none overflow-hidden h-[100vh]">
         <motion.div 
@@ -233,7 +233,7 @@ export default function Home() {
       </div>
 
       {/* Cinematic Intro Video Section (First Item) */}
-      <section className="relative w-screen left-1/2 -translate-x-1/2 h-[50dvh] sm:h-[65dvh] md:h-[85dvh] overflow-hidden bg-black border-b border-white/5">
+      <section className="relative w-full h-[50dvh] sm:h-[65dvh] md:h-[85dvh] overflow-hidden bg-black border-b border-white/5">
         {/* Cinematic Video Container */}
         <div className="absolute inset-0 pointer-events-none overflow-hidden z-0">
           <div className="absolute inset-0 bg-gradient-to-b from-[#080808]/10 via-transparent to-[#080808] z-10" />
@@ -287,7 +287,7 @@ export default function Home() {
       </section>
 
       {/* Hero Section - Full Bleed centered text below the video showcase */}
-      <section ref={heroRef} className="relative w-screen left-1/2 -translate-x-1/2 min-h-[50vh] md:min-h-[60vh] flex flex-col justify-center pt-20 pb-20 overflow-hidden bg-black border-b border-white/5">
+      <section ref={heroRef} className="relative w-full min-h-[50vh] md:min-h-[60vh] flex flex-col justify-center pt-20 pb-20 overflow-hidden bg-black border-b border-white/5">
         {/* Abstract space lines backdrop instead of a heavy video */}
         <div className="absolute inset-0 pointer-events-none opacity-[0.03] bg-[linear-gradient(rgba(255,255,255,0.15)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.15)_1px,transparent_1px)] bg-[size:40px_40px] z-0" />
         <div className="absolute inset-0 bg-gradient-to-b from-[#080808] via-transparent to-[#080808] z-5 pointer-events-none" />
@@ -354,7 +354,7 @@ export default function Home() {
       </section>
 
       {/* Human / Excellence Section */}
-      <section ref={approachRef} className="py-24 border-t border-white/5">
+      <section ref={approachRef} className="py-24 border-t border-white/5 px-6 md:px-20 lg:px-40">
         <motion.div 
           style={{ opacity: approachOpacity, y: approachY }}
           className="grid grid-cols-1 lg:grid-cols-2 gap-20"
@@ -453,7 +453,7 @@ export default function Home() {
       </section>
 
       {/* Vision Section */}
-      <section ref={visionRef} className="py-32 border-t border-white/5 bg-white/[0.01]">
+      <section ref={visionRef} className="py-32 border-t border-white/5 bg-white/[0.01] px-6 md:px-20 lg:px-40">
         <motion.div 
           style={{ opacity: visionOpacity, y: visionY }}
           className="max-w-4xl mx-auto space-y-16"
@@ -508,7 +508,7 @@ export default function Home() {
       </section>
 
       {/* Nos Expertises Interactiv Section */}
-      <section ref={expertiseRef} className="py-24 border-t border-white/5 relative bg-zinc-950">
+      <section ref={expertiseRef} className="py-24 border-t border-white/5 relative bg-zinc-950 px-6 md:px-20 lg:px-40">
         <motion.div 
           style={{ opacity: expertiseTitleOpacity, x: expertiseTitleX }}
           className="mb-16"
@@ -653,7 +653,7 @@ export default function Home() {
       </section>
 
       {/* Services Complémentaires Section */}
-      <section ref={complementaryRef} className="py-24 border-t border-white/5">
+      <section ref={complementaryRef} className="py-24 border-t border-white/5 px-6 md:px-20 lg:px-40">
         <motion.div 
           style={{ 
             opacity: complementaryTitleOpacity, 
@@ -703,7 +703,7 @@ export default function Home() {
       </section>
 
       {/* Squares / Expertise Section */}
-      <section ref={creationRef} className="py-24 border-t border-white/5">
+      <section ref={creationRef} className="py-24 border-t border-white/5 px-6 md:px-20 lg:px-40">
         <motion.div 
           style={{ 
             opacity: creationTitleOpacity, 
@@ -743,7 +743,7 @@ export default function Home() {
       </section>
 
       {/* Beyond the Concept Section */}
-      <section className="py-24 border-t border-white/5">
+      <section className="py-24 border-t border-white/5 px-6 md:px-20 lg:px-40">
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-10">
           <div className="lg:col-span-1 space-y-6">
             <h3 className="text-xs font-mono uppercase tracking-[0.3em] text-zinc-500">Expertises annexes</h3>
